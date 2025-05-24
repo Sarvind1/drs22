@@ -5,4 +5,6 @@ pytest>=7.4.0
 boto3==1.34.14
 toml>=0.10.2
 Pillow==10.1.0
-openpyxl==3.1.2  # For Excel file handling 
+openpyxl==3.1.2
+streamlit_pdf_viewer==1.17.0
+# For Excel file handling 
