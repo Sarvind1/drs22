@@ -10,6 +10,8 @@ import tempfile
 from s3_utils import upload_file_to_s3, download_file_from_s3, get_s3_file_url, get_s3_client, get_full_s3_key
 import streamlit as st
 from s3_utils import get_secret
+from streamlit_pdf_viewer import pdf_viewer
+
 
 def load_data():
     """Load and prepare the review data."""
@@ -97,16 +99,17 @@ def embed_pdf_base64(s3_key):
             base64_pdf = base64.b64encode(pdf_content).decode('utf-8')
             
             # Create the PDF viewer HTML with base64 data
-            pdf_display = f'''
-                    <iframe
-                        src="{url}#view=FitH"
-                        type="application/pdf"
-                        width="700"
-                        height="1000"
-                        style="border: 1px solid #ddd; border-radius: 4px;"
-                    /> </iframe>
-           
-            '''
+            pdf_display = f"""
+                <iframe
+                    src="https://mozilla.github.io/pdf.js/web/viewer.html?file={url}"
+                    width="700"
+                    height="1000"
+                    style="border: 1px solid #ddd; border-radius: 4px;"
+                ></iframe>
+            """
+
+            pdf_viewer(pdf_content)
+
             return pdf_display
         except Exception as s3_error:
             st.warning(f"Error fetching from S3: {str(s3_error)}")
