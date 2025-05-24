@@ -82,25 +82,30 @@ def embed_pdf_base64(s3_key):
         full_key = get_full_s3_key(s3_key)
         
         try:
+            # Get the PDF content directly from S3
+            url = s3_client.generate_presigned_url('get_object',
+                                                 Params={'Bucket': bucket_name,
+                                                        'Key': full_key,
+                                                        'ResponseContentType': 'application/pdf',
+                                                        'ResponseContentDisposition': 'inline'},
+                                                 ExpiresIn=3600)
+            print (url)
             response = s3_client.get_object(Bucket=bucket_name, Key=full_key)
             pdf_content = response['Body'].read()
             
             # Encode the PDF content as base64
             base64_pdf = base64.b64encode(pdf_content).decode('utf-8')
             
-            # Create the PDF viewer HTML using PDF.js
+            # Create the PDF viewer HTML with base64 data
             pdf_display = f'''
-                <div style="width:700px; height:1000px;">
-                    <object
-                        data="https://mozilla.github.io/pdf.js/web/viewer.html?file=data:application/pdf;base64,{base64_pdf}"
-                        type="text/html"
-                        width="100%"
-                        height="100%"
+                    <iframe
+                        src="{url}#view=FitH"
+                        type="application/pdf"
+                        width="700"
+                        height="1000"
                         style="border: 1px solid #ddd; border-radius: 4px;"
-                    >
-                        <p>Unable to display PDF file. <a href="data:application/pdf;base64,{base64_pdf}" download="document.pdf">Download</a> instead.</p>
-                    </object>
-                </div>
+                    /> </iframe>
+           
             '''
             return pdf_display
         except Exception as s3_error:
