@@ -108,7 +108,7 @@ def embed_pdf_base64(s3_key):
                 ></iframe>
             """
 
-            pdf_viewer(pdf_content)
+            pdf_viewer(pdf_content, height= 1200,width= 900)
 
             # return pdf_display
         except Exception as s3_error:
