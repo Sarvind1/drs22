@@ -91,15 +91,14 @@ def embed_pdf_base64(s3_key):
             
             # Create the PDF viewer HTML with base64 data
             pdf_display = f'''
-                <div style="width:100%; height:60vh;">
-                    <embed
+                    <iframe
                         type="application/pdf"
                         src="data:application/pdf;base64,{base64_pdf}"
-                        width="100%"
-                        height="100%"
+                        width="700"
+                        height="1000"
                         style="border: 1px solid #ddd; border-radius: 4px;"
-                    />
-                </div>
+                    /> </iframe>
+           
             '''
             return pdf_display
         except Exception as s3_error:
