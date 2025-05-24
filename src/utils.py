@@ -110,7 +110,7 @@ def embed_pdf_base64(s3_key):
 
             pdf_viewer(pdf_content)
 
-            return pdf_display
+            # return pdf_display
         except Exception as s3_error:
             st.warning(f"Error fetching from S3: {str(s3_error)}")
             
